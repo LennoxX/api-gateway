@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    image: projeto-arquitetura/api-gateway-1.0.0
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY={$JWT_SECRET_KEY}
+      - ENV_DOMAIN_NAME=${ENV_DOMAIN_NAME}
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - VIRTUAL_PORT=${VIRTUAL_PORT}
+      - VIRTUAL_DOMAIN=${VIRTUAL_DOMAIN}
+      - KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD}
+      - KEY_ALIAS_NAME=${KEY_ALIAS_NAME}
+    networks:
+      - arquitetura-network
+    hostname: api-gateway.lucaslabs.com   # Definindo o hostname
+    restart: unless-stopped
+    volumes:
+      - D:/Projetos/Docker/Projeto Arquitetura/certificados/.lucaslabs:/app/resources
+
+networks:
+  arquitetura-network:
+    external: true

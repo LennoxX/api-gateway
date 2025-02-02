@@ -1,0 +1,59 @@
+server:
+  port: 443  # Porta do Gateway
+  forward-headers-strategy: native
+  ssl:
+    enabled: true
+    key-store: /app/resources/keystore.p12 
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-alias-name: ${KEY_ALIAS_NAME}
+
+spring:
+  application:
+    name: api-gateway  # Nome do serviço (opcional)
+  cloud:
+    gateway:
+      default-filters:
+        - name: AddResponseHeader
+          args: 
+            name: Access-Control-Expose-Headers
+            value: Authorization
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - Authorization
+              - Content-Type
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true					
+      forwarded:
+        enabled: true
+  main:
+    web-application-type: reactive
+eureka:
+  client:
+    service-url:
+      defaultZone: https://eureka-server.lucaslabs.com/eureka # URL do Eureka Server
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: api-gateway.lucaslabs.com
+    prefer-ip-address: false
+    non-secure-port: 80
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+
+env:
+  domain:
+    name: ${ENV_DOMAIN_NAME}
