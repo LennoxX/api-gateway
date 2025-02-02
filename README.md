@@ -16,7 +16,7 @@ Na raiz do projeto, crie um arquivo chamado `.env` com as seguintes configuraç�
 
 ```ini
 # Configurações do Banco de Dados
-DB_URL=jdbc:mysql://<host>:<port>/<database>
+DB_URL=jdbc:mysql://<host>:<port>
 DB_USER=<db_user>
 DB_PASS=<db_password>
 
